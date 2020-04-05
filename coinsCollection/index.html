@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="icon" href="img/icon.jpg" />
+</head>
+<body>
+    <h1>Welcome to my coins collection</h1>
+    <button>Add new coin</button>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Year</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</body>
+<script>
+    const table = document.querySelector("tbody")
+    const addBtn = document.querySelector("button")
+
+    addBtn.onclick = function() {
+        const row = document.createElement("tr")
+        for(let i=0; i < 3; i++) {
+            row.appendChild(document.createElement("td"))
+        }
+        const saveBtn = document.createElement("button")
+        saveBtn.textContent = "Save"
+        const editBtn = document.createElement("button")
+        editBtn.textContent = "Edit"
+        const deleteBtn = document.createElement("button")
+        deleteBtn.textContent = "Delete"
+        row.childNodes[2].appendChild(saveBtn)
+        row.childNodes[2].appendChild(deleteBtn)
+
+        editBtn.onclick = function() {
+            function swapContent(i) {
+                const input = document.createElement("input")
+                const td = row.childNodes[i]
+                input.value = td.textContent
+                td.textContent = ""
+                td.appendChild(input)
+            }
+            row.childNodes[2].firstChild.replaceWith(saveBtn)
+            swapContent(0)
+            swapContent(1)
+        }
+        saveBtn.onclick = function() {
+            function insertInputValue(i) {
+                const value = row.childNodes[i].firstChild.value
+                row.childNodes[i].textContent = value
+            }
+            row.childNodes[2].childNodes[0].replaceWith(editBtn)
+            insertInputValue(0)
+            insertInputValue(1)
+        }
+        deleteBtn.onclick = function() {
+            table.removeChild(row)
+        }
+
+        editBtn.onclick()
+        
+        table.appendChild(row)
+    }
+</script>
