@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>jQuery</title>
+    <script type="text/javascript"
+    src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    function edit() {
+        const td = $(this)
+        const text = td.text()
+        const input = $(`<input id="edit" value="${text}"/>`)
+        td.off("click")
+        td.html(input)
+        input.focus()
+        input.on("blur", save)
+        $('button').trigger('asdf')
+    }
+    function save() {
+        const input = $(this)
+        const td = input.parent()
+        const text = input.val()
+        td.text(text)
+        td.on("click", edit)
+    }
+    $(function () {
+        $("td").on("click", edit)
+        $('button').bind('asdf', function () { alert('The cake is a lie!'); })
+        // $("*").unbind()
+        //text() - set/get text of an element (html tags are treated as normal text)
+        //html() - set/get html of an element (you can insert new nodes using this function)
+        //val() - set/get values of forms
+    });
+    </script>
+</head>
+<body>
+    <table>
+        <tr><td>One</td></tr>
+        <tr><td>Two</td></tr>
+        <tr><td>Three</td></tr>
+        <tr><td>...</td></tr>
+    </table>
+    <button>Button</button>
+</body>
+</html>

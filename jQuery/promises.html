@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Promises</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        "use strict";
+        function fetch(url) {
+            return new Promise((resolve, reject) => {
+                const xhttp = new XMLHttpRequest()
+                xhttp.onload = function() {
+                    if(xhttp.status == 200) {
+                        resolve(xhttp.response)
+                    } else {
+                        reject(Error(xhttp.statusText))
+                    }
+                }
+                xhttp.onerror = function() {
+                    reject(Error("Can't connect"))
+                }
+                xhttp.open("GET", url)
+                xhttp.send()
+            })
+        }
+        $(function() {
+            $("a").on("click", function(){
+                const link = $(this)
+                fetch(link.attr("href"))
+                    .then(function(response){
+                        $("#content").html(response)
+                    }).catch(function(err){
+                        $("#content").text(err)
+                    })
+                return false
+            })
+        })
+    </script>
+</head>
+<body>
+    <h1>Promises</h1>
+    <ul>
+        <li><a href="promisesTable.html">Table</a></li>
+        <li><a href="promisesList.html">List</a></li>
+        <li><a href="promisesDiv.html">Divs</a></li>
+        <li><a href="promisesNotExistingPege.html">Nothing</a></li>
+    </ul>
+    <div id="content"></div>
+</body>
+</html>

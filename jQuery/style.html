@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>jQuery</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <script type="text/javascript"
+    src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(function () {
+        $('button:contains(\'A\')').click(function () {
+            $('#classic').addClass('asdf'); //when you click button A, it adds class to span with id classic
+        });
+        $('button:contains(\'B\')').click(function () {
+            $('#classic').removeClass('asdf'); //when you click button B, it removes class from span with id classic
+        });
+        $('button:contains(\'C\')').click(function () {
+            $('#toggle').toggleClass('asdf'); //when you click button C, it toggles class of span with id classic
+        });
+        $('tr:even').addClass('asdf');
+        $("ol.a li").not(":has(.b a)").addClass('betterColor')
+    });
+    </script>
+</head>
+<body>
+    <table>
+        <tr><td>First</td></tr>
+        <tr><td>Second</td></tr>
+        <tr><td>Third</td></tr>
+        <tr><td>Fourth</td></tr>
+        <tr><td>Fifth</td></tr>
+        <tr><td>Sixth</td></tr>
+    </table>
+    <div><button>Text A</button><button>Text B</button><span id="classic">Adding/removing
+    class</span></div>
+    <div><button>Text C</button><span id="toggle">Toggling class</span></div>
+    <ol class="a">
+        <li><span class="b"><a>Link</a></span></li>
+        <li><span class="b">Not a link</span></li>
+        <li><span><a>Link, but without class b</a></span>
+        <li><span>No link, no class b</span></li> 
+        <li><span class="b"><a>Link with b class</a></span>, <a>Some other link</a></li>
+        <li><a>Link</a>, <span class=b">b class</span></li>
+    </ol>
+    <ol>
+        <li><span class="b"><a>Link</a></span></li>
+        <li><span class="b">Not a link</span></li>
+        <li><span><a>Link, but without class b</a></span>
+        <li><span>No link, no class b</span></li> 
+        <li><span class="b"><a>Link with b class</a></span>, <a>Some other link</a></li>
+        <li><a>Link</a>, <span class=b">b class</span></li>
+    </ol>
+</body>
+</html>
