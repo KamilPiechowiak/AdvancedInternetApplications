@@ -1,0 +1,65 @@
+body {
+  margin: 0;
+  font-family: "Muli", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  margin: 5%;
+}
+
+h1 {
+  margin: 30px 0;
+}
+
+#optionsBar {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+@media only screen and (max-width: 800px) {
+  body {
+    width: 800px;
+  }
+}
+table {
+  margin: 5% 0;
+}
+table tr:nth-child(even) {
+  background-color: #dddddd;
+}
+table td {
+  padding: 20px 0;
+  width: 14.2%;
+  text-align: center;
+}
+table .td-2 {
+  width: 28.5%;
+  text-align: justify;
+  padding: 0 10px;
+}
+table img {
+  max-width: 100%;
+  height: auto;
+}
+table input, table textarea {
+  width: 100%;
+  padding: 5%;
+}
+table input:focus, table textarea:focus {
+  border-color: #5252e0;
+}
+table button {
+  margin: 10px;
+}
+
+/*# sourceMappingURL=index.css.map */

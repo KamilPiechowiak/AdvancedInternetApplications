@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "name": "Lucario",
+        "description": "A well-trained one can sense auras to identify and take in the feelings of creatures over half a mile away.",
+        "imgUrl": "img/lucario.png",
+        "rating": 5,
+        "types": "Fighting,Steel"
+    },
+    {
+        "id": 2,
+        "name": "Weavile",
+        "description": " It lives in snowy regions. It carves patterns in trees with its claws as a signal to others.",
+        "imgUrl": "img/weavile.png",
+        "rating": 4,
+        "types": "Dark,Ice"
+    },
+    {
+        "id": 3,
+        "name": "Gallade",
+        "description": "A master of courtesy and swordsmanship, it fights using extending swords on its elbows.",
+        "imgUrl": "img/gallade.png",
+        "rating": 5,
+        "types": "Psychic,Fighting"
+    },
+    {
+        "id": 4,
+        "name": "Froslass",
+        "description": " It freezes foes with an icy breath nearly -60 degrees F. What seems to be its body is actually hollow.",
+        "imgUrl": "img/froslass.png",
+        "rating": 4,
+        "types": "Ice,Ghost"
+    },
+    {
+        "id": 5,
+        "name": "Tangela",
+        "description": "The whole body is swathed with wide vines that are similar to seaweed. The vines sway as it walks.",
+        "imgUrl": "img/tangela.png",
+        "rating": 2,
+        "types": "Grass"
+    },
+    {
+        "id": 6,
+        "name": "Starly",
+        "description": "They flock in great numbers. Though small, they flap their wings with great power.",
+        "imgUrl": "img/starly.png",
+        "rating": 3,
+        "types": "Normal,Flying"
+    }
+]
