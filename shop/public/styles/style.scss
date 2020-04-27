@@ -1,0 +1,142 @@
+@import "reset";
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    color: black;
+    background-color: white;
+    font-family: "Muli", sans-serif;
+}
+
+h1 {
+    font-size: 2em;
+    font-weight: bolder;
+    margin-bottom: 2em;
+}
+
+h2, strong {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 1em;
+}
+
+#outerContainer {
+    margin: 4vw 7vw;
+}
+
+.buttonBar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 2em;
+}
+
+#productsContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.product {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 30px;
+    img {
+        max-width: 100%;
+        height: auto;
+        margin: 20px 0;
+    }
+}
+
+.product:hover {
+    box-shadow: 0px 0px 1px black;
+}
+
+@media only screen and (min-width: 700px) {
+    .product {
+        width: 50%;
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    .product {
+        width: 33.3%;
+    }
+}
+
+
+.alert {
+    display: inline-block;
+    padding: 1em 1.5em;
+    border-radius: 10px;
+    margin: 1em;
+    
+    border: solid 1px;
+}
+
+$lightGreen: #d4edda;
+$darkGreen: #08911f;
+
+.alert-success {
+    @extend .alert;
+    color: $darkGreen;
+    background-color: $lightGreen;
+    border-color: $darkGreen;
+}
+
+$lightRed: #f8d7da;
+$darkRed: #721c24;
+
+.alert-danger {
+    @extend .alert;
+    color: $darkRed;
+    background-color: $lightRed;
+    border-color: $darkRed;
+}
+
+$lightBlue: #d1ecf1;
+$darkBlue: #0c5460;
+
+.alert-info {
+    @extend .alert;
+    color: $darkBlue;
+    background-color: $lightBlue;
+    border-color: $darkBlue;
+}
+
+.button {
+    @extend .alert-success;
+    text-decoration: none;
+    font-size: 1em;
+    border-width: 2px;
+}
+
+.button:hover {
+    cursor: pointer;
+}
+
+#basketTable {
+    width: 100%;
+    tr {
+        border-bottom: solid 2px #cccccc;
+        th {
+            font-weight: bold;
+        }
+        th, td {
+            width: 25%;
+            padding: 2%;
+            text-align: center;
+            img {
+                max-width: 100px;
+                height: auto;
+            }
+        }
+    }
+}
+
+.notAvailable li {
+    list-style-type: disc;
+    margin: 0.7em;
+}
+

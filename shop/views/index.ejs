@@ -1,0 +1,25 @@
+<%- include("header.ejs") %>
+
+<% if(message != undefined) { %>
+    <div class=<%=message.class%>>
+        <%= message.message %>
+    </div>
+<% } %>
+<div class="buttonBar">
+    <a class="button" href="/basket" title="Show basket">Basket</a>
+</div>
+
+<ul id="productsContainer">
+<% products.forEach((product) => { %>
+    <li class="product">
+        <h2><%= product.name %></h2>
+        <img src=<%=product.img%> alt=<%=product.name%> />
+        <form method="POST" action="/addProduct" >
+            <input type="hidden" name="id" value=<%=product.id%> />
+            <input class="button" type="submit" value="Add" />
+        </form>
+    </li>
+<% }) %>
+</ul>
+
+<%- include("footer.ejs") %>

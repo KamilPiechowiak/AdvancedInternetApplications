@@ -1,0 +1,48 @@
+<%- include("header.ejs") %>
+<div>
+    <strong>Your basket</strong>
+    <div class="buttonBar">
+        <a class="button" href="/" title="Back to products' list">Products</a>
+    </div>
+    <% if(notAvailable.length > 0) { %>
+        <div class="alert-danger notAvailable">
+            <p>The following items are not available in the specified quantity:</p>
+            <ul>
+                <% notAvailable.forEach((product) => { %>
+                    <li><%=product.name%></li>
+                <% }) %> 
+            </ul>
+        </div>
+    <% } %>
+
+    <% if(products.length > 0) { %>
+        <table id="basketTable">
+            <tr>
+                <th>Name</th>
+                <th>Image</th>
+                <th>Quantity</th>
+                <th>Actions</th>
+            </tr>
+            <% products.forEach((product) => { %>
+            <tr>
+                <td><%= product.name %></td>
+                <td><img src=<%=product.img%> alt=<%=product.name%> /></td>
+                <td><%= product.quantity %></td>
+                <td>
+                    <form method="POST" action="removeProduct">
+                        <input type="hidden" name="id" value=<%=product.id%> />
+                        <input class="button" type="submit" value="Remove"/>
+                    </form>
+                </td>
+            </tr>
+            <% }) %>
+        </table>
+        <div class="buttonBar">
+            <a class="button" href="/cancelTransaction" title="Cancel transaction">Clear basket</a>
+            <a class="button" href="/finalizeTransaction" title="Checkout">Checkout</a>
+        </div>
+    <% } else { %>
+        <p class="alert-info">Your basket is empty.</p>  
+    <% } %>
+</div>
+<%- include("footer.ejs") %>
