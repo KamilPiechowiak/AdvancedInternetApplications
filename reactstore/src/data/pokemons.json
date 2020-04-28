@@ -10,7 +10,7 @@
     {
         "id": 2,
         "name": "Weavile",
-        "description": " It lives in snowy regions. It carves patterns in trees with its claws as a signal to others.",
+        "description": "It lives in snowy regions. It carves patterns in trees with its claws as a signal to others.",
         "imgUrl": "img/weavile.png",
         "rating": 4,
         "types": "Dark,Ice"
@@ -26,7 +26,7 @@
     {
         "id": 4,
         "name": "Froslass",
-        "description": " It freezes foes with an icy breath nearly -60 degrees F. What seems to be its body is actually hollow.",
+        "description": "It freezes foes with an icy breath nearly -60 degrees F. What seems to be its body is actually hollow.",
         "imgUrl": "img/froslass.png",
         "rating": 4,
         "types": "Ice,Ghost"

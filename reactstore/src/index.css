@@ -34,7 +34,7 @@ h1 {
 table {
   margin: 5% 0;
 }
-table tr:nth-child(even) {
+table tbody tr:nth-child(odd) {
   background-color: #dddddd;
 }
 table td {

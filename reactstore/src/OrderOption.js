@@ -30,7 +30,7 @@ class OrderOption extends React.Component {
         const value = this.props.order.field + "-" + this.props.order.direction
         return (
             <div>
-                <label for="order">Order by: </label>
+                <label htmlFor="order">Order by: </label>
                 <select id="order"value={value} onChange={this.updateOrder}>
                     {options}
                 </select>

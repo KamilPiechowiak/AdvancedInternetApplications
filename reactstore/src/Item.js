@@ -49,8 +49,8 @@ class Item extends React.Component {
             return (
                 <tr>
                     <td>{this.props.item.name}</td>
-                    <td class="td-2">{this.props.item.description}</td>
-                    <td><img src={this.props.item.imgUrl}></img></td>
+                    <td className="td-2">{this.props.item.description}</td>
+                    <td><img src={this.props.item.imgUrl} alt=""></img></td>
                     <td>{this.props.item.rating}</td>
                     <td>{this.props.item.types}</td>
                     <td>{editBtn} {removeBtn}</td>

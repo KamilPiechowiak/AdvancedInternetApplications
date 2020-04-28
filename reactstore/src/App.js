@@ -57,7 +57,6 @@ class App extends React.Component {
     }
 
     updateStateFromChild = (name, value) => {
-        console.log(name, value)
         this.setState({
             [name]: value
         })
@@ -65,7 +64,10 @@ class App extends React.Component {
 
     compareItems = (a, b) => {
         const {field, direction} = this.state.order
-        return ((a[field] > b[field]) === (direction === "inc"))
+        if(a[field] === b[field]) {
+            return 0
+        }
+        return ((a[field] > b[field]) === (direction === "inc")) ? 1 : -1
     }
 
     checkItem = (item) => {
@@ -84,7 +86,6 @@ class App extends React.Component {
             .sort(this.compareItems)
             .filter((item) => this.checkItem(item))
             .map((item) => <Item key={item.id} item={item} updateHandler={this.saveItem} removeHandler={this.removeItem}/>)
-        console.log(this.state.list)
         return (
             <div>
                 <h1>Pokemon collection system</h1>
@@ -94,10 +95,14 @@ class App extends React.Component {
                     <OrderOption name="order" order={this.state.order} fields={this.orderFields} updateHandler={this.updateStateFromChild}/>
                 </div>
                 { 
-                    itemsList.length == 0 ? <p>There are no Pokemons in your collection</p> :
+                    itemsList.length === 0 ? <p>There are no Pokemons in your collection</p> :
                     <table>
-                        <tr><th>Name</th><th>Description</th><th>Image</th><th>Rating</th><th>Types</th><th>Actions</th></tr>
-                        {itemsList}
+                        <thead>
+                            <tr><th>Name</th><th>Description</th><th>Image</th><th>Rating</th><th>Types</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody>
+                            {itemsList}
+                        </tbody>
                     </table>
                 }
             </div>
