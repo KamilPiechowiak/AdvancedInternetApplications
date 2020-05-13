@@ -1,0 +1,10 @@
+docker pull postgres
+docker volume create pgdata
+docker run --rm --name shop -e POSTGRES_PASSWORD=pokemon -d -p 5432:5432 -v pgdata:/var/lib/postgresql/data postgres
+docker cp .\postgres\ fcaeebf3d85b:/ #fcaeebf3d85b zastępujemy id kontenera
+docker exec -t -i shop /bin/bash #poniższe instrukcje wewnątrz shella w kontenerze
+	PGPASSWORD=pokemon psql -h localhost -U postgres -f postgres/createdb.sql
+	PGPASSWORD=pokemon psql -h localhost -U shop -d shop -f postgres/insert.sql
+	exit
+npm install
+npm start
