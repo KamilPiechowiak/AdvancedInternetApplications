@@ -17,6 +17,7 @@ const UserTournament = sequelize.define("userTournament", {
     indexes: [
         {fields: ["playerId"]},
         {fields: ["tournamentId"]},
+        {unique: true, fields: ["tournamentId", "playerId"]},
         {unique: true, fields: ["tournamentId", "ranking"]},
         {unique: true, fields: ["tournamentId", "licenseNumber"]}
     ]

@@ -8,7 +8,7 @@ const messages = require("../strings/messages")
 router.post("/login", (req, res) => {
     loginService.login(req.body).then(user => {
         req.session.userid = loginService.serializeUser(user)
-        res.redirect(utils.redirectTo(req, "/"))
+        return res.redirect(utils.redirectTo(req, "/"))
     }).catch(err => {
         return res.render("user/login", {
             message: messages[err]
@@ -23,21 +23,21 @@ router.get("/login", (req, res) => {
         })
     } else {
         req.session.message = "alreadyLoggedIn"
-        res.redirect("/")
+        return res.redirect("/")
     }
 })
 
 router.get("/logout", (req, res) => {
     req.session.userid = null
     req.session.message = "loggedOut"
-    res.redirect("/")
+    return res.redirect("/")
 })
 
 router.post("/signup", (req, res) => {
     registrationService.register(req.body).then(() => {
         console.log("success")
         req.session.message = "accountCreated"
-        res.redirect("/")
+        return res.redirect("/")
     }).catch(err => {
         console.log(err)
         res.render("user/signup", {
@@ -66,7 +66,7 @@ router.get("/activate/:token", async (req, res) => {
 router.post("/forgotpassword", async (req, res) => {
     forgotPasswordService.forgotPassword(req.body.email).then(() => {
         req.session.message = "resetPasswordEmailSent"
-        res.redirect("/")
+        return res.redirect("/")
     }).catch(err => {
         console.log(err)
         res.render("user/forgotpassword", {
@@ -86,7 +86,7 @@ router.get("/forgotpassword", (req, res) => {
 router.post("/resetpassword/:token", (req, res) => {
     forgotPasswordService.resetPassword(req.body, req.params.token).then(() => {
         req.session.message = "passwordResetSuccess"
-        res.redirect("/user/login")
+        return res.redirect("/user/login")
     }).catch(err => {
         console.log(err)
         res.render("user/resetpassword", {

@@ -12,5 +12,8 @@ module.exports = {
     "passwordAlreadyReset": {text: "Password has been already reset.", alert: "info"},
     "resetPasswordTokenExpired": {text: "Password reset token has expired.", alert: "danger"},
     "loggedOut": {text: "You have been logged out correctly.", alert: "success"},
-    "alreadyLoggedIn": {text: "You are already logged in.", alert: "info"}
+    "alreadyLoggedIn": {text: "You are already logged in.", alert: "info"},
+    "savedSuccessfully": {text: "Saved successfully.", alert: "success"},
+    "applicationDeadlineHasPassed": {text: "Application deadline has passed", alert: "danger"},
+    "participantsLimitReached": {text: "Number of participants has reached its limit. No more registrations are allowed.", alert: "danger"},
 }

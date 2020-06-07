@@ -3,10 +3,9 @@ const session = require("express-session")
 const app = express()
 const bodyParser = require("body-parser")
 const config = require("./config")
-// const passport = require("./services/user/passport")
 const router = require("./routes")
 const { sequelize } = require("./models")
-
+const tournamentsSeedingService = require("./services/tournaments/seedingService")
 
 app.set("view engine", "ejs")
 
@@ -14,8 +13,7 @@ app.use(session(config.session))
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
-// app.use(passport.initialize())
-// app.use(passport.session())
+tournamentsSeedingService.start()
 
 app.use(express.static("public"))
 

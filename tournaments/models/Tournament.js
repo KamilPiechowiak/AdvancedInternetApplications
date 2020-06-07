@@ -2,9 +2,9 @@ const Sequelize = require("sequelize")
 const sequelize = require("./sequelize")
 const User = require("./User")
 
-Sequelize
+class Tournament extends Sequelize.Model {}
 
-const Tournament = sequelize.define("tournament", {
+Tournament.init({
     name: {
         type: Sequelize.STRING
     },
@@ -26,9 +26,25 @@ const Tournament = sequelize.define("tournament", {
     },
     maxParticipants: {
         type: Sequelize.INTEGER,
-        min: 2
+        min: 2,
+        isPowerOfTwo(value) {
+            let a = value
+            while(a) {
+                if(a%2) {
+                    throw new Error("Max number of participants has to be a power of 2")
+                }
+                a=Math.floor(a/2)
+            }
+        }
+    },
+    applicationDeadline: {
+        type: Sequelize.DATE
+    },
+    active: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
     }
-})
+}, {sequelize, modelName: "tournament"})
 
 Tournament.belongsTo(User, {
     as: "organizer"

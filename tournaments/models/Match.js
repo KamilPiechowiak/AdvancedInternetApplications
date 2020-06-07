@@ -3,14 +3,52 @@ const sequelize = require("./sequelize")
 const User = require("./User")
 const Tournament = require("./Tournament")
 
-const Match = sequelize.define("match", {
-    firstWon: {
-        type: Sequelize.BOOLEAN
+class Match extends Sequelize.Model {
+    async updateVerdict(userId, verdict) {
+        if(userId == this.player1) {
+            if(verdict) {
+                this.winnerBy1 = 1
+            } else {
+                this.winnerBy1 = 2
+            }
+        } else if(userId == this.player2) {
+            if(verdict) {
+                this.winnerBy2 = 2
+            } else {
+                this.winnerBy2 = 1
+            }
+        }
+        let winner = 0
+        if(this.winnerBy1 > 0 && this.winnerBy1 == this.winnerBy2) { //they agree about the result
+            this.disagreement = false
+            winner = this.winnerBy1
+        } else if(this.winnerBy1 > 0 && this.winnerBy2 > 0) { //they don't agree
+            this.disagreement = true
+            this.winnerBy1 = 0
+            this.winnerBy2 = 0
+        }
+        await match.save()
+        return winner
+    }
+}
+
+Match.init({
+    winnerBy1: {
+        type: Sequelize.SMALLINT,
+        defaultValue: 0
+    },
+    winnerBy2: {
+        type: Sequelize.SMALLINT,
+        defaultValue: 0
     },
     layer: {
         type: Sequelize.INTEGER
+    },
+    disagreement: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
     }
-})
+}, {sequelize, modelName: "match"})
 
 Match.belongsTo(User, {
     as: "player1"

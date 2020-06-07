@@ -18,5 +18,8 @@ module.exports = {
             req.session.message = undefined
             return messages[message]
         }
+    },
+    getUrlWithoutPageNumber: function(req) {
+        return req.url.split("/").slice(0, -1).join("/")
     }
 }

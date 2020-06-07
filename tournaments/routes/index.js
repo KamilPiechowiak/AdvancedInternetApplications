@@ -1,8 +1,12 @@
 const express = require("express")
 const router = express.Router()
 const userRouter = require("./user")
+const tournamentsRouter = require("./tournaments")
+const playerRouter = require("./player")
+const organizerRouter = require("./organizer")
 const loginService = require("../services/user/loginService")
 const utils = require("./utils")
+const tournamentsService = require("../services/tournaments")
 
 router.all("*", async (req, res, next) => {
     console.log(req.session.userid)
@@ -17,10 +21,21 @@ router.all("*", async (req, res, next) => {
 })
 
 router.use("/user", userRouter)
+router.use("/tournaments", tournamentsRouter)
+router.use("/player", playerRouter)
+router.use("/organizer", organizerRouter)
 
-router.get("/", (req, res) => {
-    res.render("index", {
-        message: utils.getMessage(req)
+router.get("/", (req, res, next) => {
+    tournamentsService.getTournaments({
+        page: 1
+    }).then(tournaments => {
+        res.render("index", {
+            message: utils.getMessage(req),
+            ...tournaments
+        })
+    }).catch(err => {
+        console.log(err)
+        next()
     })
 })
 

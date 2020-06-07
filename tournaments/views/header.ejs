@@ -10,6 +10,16 @@
 <body>
     <div id="outerContainer">
     <h1>Pokemon tournament system</h1>
+    <ul>
+        <li><a href="/tournaments/1" title="Tournaments">Tournaments</a></li>
     <%if(user) {%>
-        <p>Hi, <%=user.email%></p>
+        <li><a href="/player/tournaments/1" title="My tournaments">My tournaments</a></li>
+        <li><a href="/player/matches/1" title="My matches">My matches</a></li>
+        <li><a href="/organizer/tournaments/1" title="Tournaments organized by me">Owned tournaments</a></li>
+        <li><a href="/organizer/tournaments/edit/0" title="Create a new tournament">New tournament</a></li>
+        <li>Hi, <%=user.email%></li>
+        <li><a href="/user/logout" title="Logout">Logout</a></li>
+    <% } else {%>
+        <li><a href="/user/login" title="Login">Login</a></li>
     <% } %>
+    </ul>
