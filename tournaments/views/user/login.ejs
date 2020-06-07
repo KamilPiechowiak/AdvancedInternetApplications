@@ -1,0 +1,12 @@
+<%- include("../header.ejs") %>
+<h1>Login</h1>
+<%- include("../alert.ejs") %>
+
+<form method="post">
+    <%-include("../input.ejs", {type: "text", field: "email", label: "Email"})%>
+    <%-include("../input.ejs", {type: "password", field: "password", label: "Password"})%>
+    <% data = {submit: "Login"} %>
+    <%-include("../input.ejs", {type: "submit", field: "submit"})%>
+</form>
+
+<%- include("../footer.ejs") %>

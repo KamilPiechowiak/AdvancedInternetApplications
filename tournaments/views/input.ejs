@@ -1,0 +1,27 @@
+<div class="form-group"><%
+        let labelExists = true
+        try{label} catch(err) {labelExists = false}
+        if(labelExists) {
+            %>
+            <label for="<%=field%>"><%=label%></label><%
+        }
+        %>
+        <input type="<%=type%>" name="<%=field%>" id="<%=field%>" <%
+        let dataExists = true
+        try{data} catch(err) {dataExists = false}
+        if(dataExists && data[field]) {
+            %>value="<%=data[field]%>"<%
+        }
+        %>/><%
+        let validationExists = true
+        try{validation} catch(err) {validationExists = false} 
+        if(validationExists && validation[field]) {
+            %><span class="validation-alert"><%
+            validation[field].forEach(element => {
+                %><%=element%> <% 
+            });
+            %></span>
+            <%
+        }
+    %>
+    </div>
