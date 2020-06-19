@@ -46,11 +46,10 @@ module.exports = {
             {model: User, as: "player2"}
         ]
         const res = await models.Match.findAndCountAll(selection)
-        const tournaments = res.rows.map(userTournament => userTournament.tournament)
         return {
             currentPage: page,
             totalPages: Math.ceil(res.count/pageSize),
-            matches: tournaments,
+            matches: res.rows,
             past: options.past,
         }
     },
@@ -66,7 +65,10 @@ module.exports = {
             if(!match) {
                 throw("NotFound")
             }
-            const winner = await match.updateVerdict(userId, verdict)
+            const winner = match.updateVerdict(userId, verdict)
+            await match.save({
+                transaction: t
+            })
             if(winner) {
                 let winnerId = match.player1Id
                 if(winner == 2) {
@@ -78,7 +80,8 @@ module.exports = {
                             previousMatch1Id: id,
                             previousMatch2Id: id
                         }
-                    }
+                    },
+                    transaction: t
                 })
                 if(!nextmatch) {
                     return
@@ -88,6 +91,9 @@ module.exports = {
                 } else {
                     nextmatch.player2Id = winnerId
                 }
+                await nextmatch.save({
+                    transaction: t
+                })
             }
         })
     }

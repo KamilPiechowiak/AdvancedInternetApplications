@@ -5,18 +5,26 @@ const Tournament = require("./Tournament")
 const Model = require("./Model")
 
 class Match extends Model {
-    async updateVerdict(userId, verdict) {
-        if(userId == this.player1) {
+    updateVerdict(userId, verdict) {
+        if(userId == this.player1Id) {
             if(verdict) {
                 this.winnerBy1 = 1
             } else {
                 this.winnerBy1 = 2
             }
-        } else if(userId == this.player2) {
+            if(this.realNumberOfParticipants == 1) {
+                this.winnerBy1 = 1
+                this.winnerBy2 = 1
+            }
+        } else if(userId == this.player2Id) {
             if(verdict) {
                 this.winnerBy2 = 2
             } else {
                 this.winnerBy2 = 1
+            }
+            if(this.realNumberOfParticipants == 1) {
+                this.winnerBy1 = 2
+                this.winnerBy2 = 2
             }
         }
         let winner = 0
@@ -28,11 +36,10 @@ class Match extends Model {
             this.winnerBy1 = 0
             this.winnerBy2 = 0
         }
-        await match.save()
         return winner
     }
     getResultForUser(userId) {
-        if(this.player1.id == userId) {
+        if(this.player1Id == userId) {
             if(this.winnerBy1 == 1 && this.winnerBy2 == 1) {
                 return "won"
             } else if(this.winnerBy1 == 2 && this.winnerBy2 == 2) {
@@ -54,6 +61,17 @@ class Match extends Model {
             }
         }
     }
+    getPlayerName(id) {
+        if(id == 1 && this.player1 != null) {
+            return this.player1.getFullName()
+        } else if(id ==2 && this.player2 != null) {
+            return this.player2.getFullName()
+        } else if(this.realNumberOfParticipants == 1) {
+            return "None - walkover"
+        } else {
+            return "Opponent not known yet"
+        }
+    }
 }
 
 Match.init({
@@ -71,6 +89,10 @@ Match.init({
     disagreement: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
+    },
+    realNumberOfParticipants: {
+        type: Sequelize.SMALLINT,
+        defaultValue: 2
     }
 }, {sequelize, modelName: "match"})
 

@@ -32,13 +32,13 @@ module.exports = {
         data.applicationDeadline = timeUtils.htmlToDate(data.displayedApplicationDeadlineDate, data.displayedApplicationDeadlineTime)
         if(id == 0 && data.time < new Date()) {
             validation["displayedDate"] = ["You can't host tournaments in the past"]
-        } else if(id != 0 && tournament.time < new Date() && tournament.time != data.time) {
+        } else if(id != 0 && tournament.time < new Date() && tournament.time.toGMTString() != data.time.toGMTString()) {
             validation["displayedDate"] = ["You can't change date of the past tournament"]
         }
         if(tournament.time < data.applicationDeadline) {
             validation["displayedApplicationDeadlineDate"] = ["Application deadline can't be later than tournament time"]
         }
-        if(id != 0 && tournament.time < new Date() && tournament.applicationDeadline != data.applicationDeadline) {
+        if(id != 0 && tournament.time < new Date() && tournament.applicationDeadline.toGMTString() != data.applicationDeadline.toGMTString()) {
             validation["displayedApplicationDeadlineDate"] = ["You can't change application deadline of the past tournament"]
         }
         tournament.name = data.name

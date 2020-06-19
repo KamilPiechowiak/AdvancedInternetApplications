@@ -28,8 +28,8 @@
     <% matches.forEach(match => {%>
         <tr>
             <td><%=match.tournament.name%></td>
-            <td><%=match.player1.id == userId ? match.player1.getFullName() : match.player2.getFullName()%></td>
-            <td><%=match.layer%></td>
+            <td><%=match.player1.id == userId ? match.getPlayerName(2) : match.getPlayerName(1)%></td>
+            <td><%=match.layer+1%></td>
             <td><%
                 let result = match.getResultForUser(userId)
                 if(result == "won") { %>
@@ -39,6 +39,7 @@
                 <% } else if(result == "waiting") { %>
                     <span title="Waiting for the opponent to enter the result">Waiting</span>
                 <% } else { %>
+                    <% if (match.disagreement) { %><%="Inconsistent answers. Enter again:"%><% } %>
                     <form method="POST">
                         <input type="hidden" name="id" value="<%=match.id%>" />
                         <select name="verdict">

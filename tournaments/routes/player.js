@@ -94,7 +94,7 @@ router.get("/matches/past/:page", (req, res, next) => {
 
 router.post("/matches/:page", async (req, res, next) => {
     matchesService.updateMatch(req.body.id, req.user.id, parseInt(req.body.verdict)).then(()=> {
-        return res.redirect(req.url)
+        return res.redirect(req.originalUrl)
     }).catch(err => {
         console.log(err)
         next()

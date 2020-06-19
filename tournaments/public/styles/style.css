@@ -1,0 +1,26 @@
+* {
+    box-sizing: border-box;
+}
+
+#matchesOuter {
+    overflow-x: scroll;
+}
+
+#matches {
+    position: relative;
+}
+
+.matchContainer {
+    position: absolute;
+    background-color: #55ff55;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    border-radius: 10px;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.winnerName {
+    text-decoration: underline;
+}

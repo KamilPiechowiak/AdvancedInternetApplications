@@ -74,7 +74,12 @@ module.exports = {
     },
     getMatches: async (id) => {
         const matches = await models.Match.findAll({
-            where: {tournamentId: id}
+            where: {tournamentId: id},
+            include: [
+                {model: models.User, as: "player1", attributes: ["firstName", "lastName"]},
+                {model: models.User, as: "player2", attributes: ["firstName", "lastName"]}
+            ],
+            order: [["id", "DESC"]]
         })
         return matches
     }

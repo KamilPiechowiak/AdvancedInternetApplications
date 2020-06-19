@@ -14,7 +14,7 @@ class User extends Model {
     }
 
     getFullName() {
-        return [firstName, lastName].join(" ")
+        return [this.firstName, this.lastName].join(" ")
     }
 }
 
