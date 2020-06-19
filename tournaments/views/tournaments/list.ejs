@@ -2,6 +2,65 @@
 <h1>Tournaments</h1>
 <%- include("../alert.ejs") %>
 
-<% %> 
+<% let query = ""
+if(search) {
+    query = `?search=${search}`
+} %>
+
+<form method="GET">
+    <% data = {search: search, submit: "Search"} %>
+    <%-include("../input.ejs", {type: "text", field: "search"})%>
+    <%-include("../input.ejs", {type: "submit", field: "submit"})%>
+</form>
+
+<% if(past) { %>
+    <a href="<%=url.replace("/past", "")%>/<%=currentPage%><%=query%>">
+        <button>
+            Upcoming tournaments
+        </button>
+    </a>
+<% } else { %>
+    <a href="<%=url%>/past/<%=currentPage%><%=query%>">
+        <button>
+            Past tournaments
+        </button>
+    </a>
+<% } %>
+
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Discipline</th>
+        <th>Time</th>
+    </tr>
+    <% tournaments.forEach(tournament => {%>
+        <tr>
+            <td><a href="/tournaments/details/<%=tournament.id%>" title="Details">
+                <%=tournament.name%>
+            </a>
+            <% if(typeof owner != "undefined" && owner) { %>
+                <a href="/organizer/tournaments/edit/<%=tournament.id%>" title="Edit"><span>Edit</span></a>
+            <% } %>
+            </td>
+            <td><%=tournament.discipline%></td>
+            <td><%=tournament.getTournamentDateTime()%></td>
+        </tr>
+    <% }) %>
+</table>
+
+<% if(currentPage > 1) { %>
+    <a href="<%=`${url}/${parseInt(currentPage)-1}${query}`%>" title="Previous page">
+        <button>Previous page</button>
+    </a>
+<% } %>
+
+<%=currentPage%>
+
+<% if(currentPage < totalPages) { %>
+    <a href="<%=`${url}/${parseInt(currentPage)+1}${query}`%>" title="Previous page">
+        <button>Next page</button>
+    </a>
+<% } %>
 
 <%- include("../footer.ejs") %>

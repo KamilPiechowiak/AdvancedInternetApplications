@@ -13,7 +13,7 @@ app.use(session(config.session))
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
-tournamentsSeedingService.start()
+// tournamentsSeedingService.start()
 
 app.use(express.static("public"))
 

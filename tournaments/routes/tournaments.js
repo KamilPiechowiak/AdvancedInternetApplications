@@ -3,14 +3,17 @@ const tournamentsService = require("../services/tournaments")
 const utils = require("./utils")
 
 const showTournaments = (req, res, next, past) => {
+    console.log(req.query.search)
     tournamentsService.getTournaments({
         page: req.params.page,
         past: past,
-        search: req.params.search
+        search: req.query.search
     }).then(tournaments => {
         res.render("tournaments/list", {
+            message: utils.getMessage(req),
             currentPage: req.params.page,
             url: utils.getUrlWithoutPageNumber(req),
+            search: req.query.search,
             ...tournaments
         })
     }).catch(err => {
@@ -27,26 +30,24 @@ router.get("/past/:page", (req, res, next) => {
     showTournaments(req, res, next, true)
 })
 
-router.get("/search/:search/:page", (req, res, next) => {
-    showTournaments(req, res, next, false)
-})
-
-router.get("/past/search/:search/:page", (req, res, next) => {
-    showTournaments(req, res, next, true)
-})
-
 router.get("/details/:id", (req, res, next) => {
-    const userid = undefined
+    let userid = null
     if(req.user && req.user.id) {
         userid = req.user.id
     }
-    tournamentsService.getSingle(id, userid).then(tournament => {
-        tournament.message = utils.getMessage(req)
-        res.render("tournaments/single", tournament)
+    tournamentsService.getSingle(req.params.id, userid).then(tournament => {
+        res.render("tournaments/single", {
+            message: utils.getMessage(req),
+            tournament: tournament
+        })
     }).catch(err => {
         console.log(err)
         next()
     })
+})
+
+router.get("/matches/:id", async (req, res) => {
+    res.json(await tournamentsService.getMatches(req.params.id))
 })
 
 module.exports = router

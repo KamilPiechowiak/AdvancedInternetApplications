@@ -1,0 +1,19 @@
+<%- include("../header.ejs") %>
+<h1><%= id=="0" ? "New" : "Edit"%> tournament</h1>
+<%- include("../alert.ejs") %>
+
+<form method="post">
+    <%-include("../input.ejs", {type: "text", field: "name", label: "Name"})%>
+    <%-include("../input.ejs", {type: "text", field: "discipline", label: "Discipline"})%>
+    <%-include("../input.ejs", {type: "date", field: "displayedDate", label: "Tournament date"})%>
+    <%-include("../input.ejs", {type: "time", field: "displayedTime", label: "Tournament time"})%>
+    <%-include("../input.ejs", {type: "number", step: "0.001", field: "latitude", label: "Latitude"})%>
+    <%-include("../input.ejs", {type: "number", step: "0.001", field: "longitude", label: "Longitude"})%>
+    <%-include("../input.ejs", {type: "number", field: "maxParticipants", label: "Max Participants"})%>
+    <%-include("../input.ejs", {type: "date", field: "displayedApplicationDeadlineDate", label: "Application deadline date"})%>
+    <%-include("../input.ejs", {type: "time", field: "displayedApplicationDeadlineTime", label: "Application deadline time"})%>
+    <% data = {submit: "Save"} %>
+    <%-include("../input.ejs", {type: "submit", field: "submit"})%>
+</form>
+
+<%- include("../footer.ejs") %>

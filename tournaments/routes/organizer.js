@@ -5,7 +5,7 @@ const utils = require("./utils")
 
 router.all("*", (req, res, next) => {
     if(!req.user) {
-        req.session.redirectTo = req.url
+        req.session.redirectTo = req.originalUrl
         return res.redirect("/user/login")
     }
     next()
@@ -15,11 +15,14 @@ const showTournaments = (req, res, next, past) => {
     tournamentsService.getTournaments({
         page: req.params.page,
         past: past,
-        organizerId: req.user.id
+        organizerId: req.user.id,
+        search: req.params.search
     }).then(tournaments => {
-        res.render("organizer/list", {
+        res.render("tournaments/list", {
             currentPage: req.params.page,
             url: utils.getUrlWithoutPageNumber(req),
+            owner: true,
+            search: req.query.search,
             ...tournaments
         })
     }).catch(err => {
@@ -36,8 +39,8 @@ router.get("/tournaments/past/:page", (req, res, next) => {
     showTournaments(req, res, next, true)
 })
 
-router.post("tournaments/edit/:id", (req, res, next) => {
-    organizerService.saveTournament(id, req.body, req.user)
+router.post("/tournaments/edit/:id", (req, res, next) => {
+    organizerService.saveTournament(req.params.id, req.body, req.user)
         .then(tournament => {
             req.session.message = "savedSuccessfully"
             return res.redirect(`/organizer/tournaments/edit/${tournament.id}`)
@@ -46,6 +49,7 @@ router.post("tournaments/edit/:id", (req, res, next) => {
                 next()
             }
             res.render("organizer/edit", {
+                id: req.params.id,
                 message: undefined,
                 data: req.body,
                 validation: err
@@ -53,10 +57,11 @@ router.post("tournaments/edit/:id", (req, res, next) => {
         })
 })
 
-router.get("tournaments/edit/:id", (req, res) => {
-    organizerService.getTournament(id, req.user)
+router.get("/tournaments/edit/:id", (req, res, next) => {
+    organizerService.getTournament(req.params.id, req.user)
         .then((data) => {
             res.render("organizer/edit", {
+                id: req.params.id,
                 message: utils.getMessage(req),
                 data: data,
                 validation: {}

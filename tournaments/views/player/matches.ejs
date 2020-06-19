@@ -1,0 +1,70 @@
+<%- include("../header.ejs") %>
+<h1>Tournaments</h1>
+<%- include("../alert.ejs") %>
+
+<% if(past) { %>
+    <a href="<%=url.replace("/past", "")%>/<%=currentPage%>">
+        <button>
+            Unresolved matches
+        </button>
+    </a>
+<% } else { %>
+    <a href="<%=url%>/past/<%=currentPage%>">
+        <button>
+            Resolved matches
+        </button>
+    </a>
+<% } %>
+
+
+
+<table>
+    <tr>
+        <th>Tournament</th>
+        <th>Opponent</th>
+        <th>Stage</th>
+        <th>Result</th>
+    </tr>
+    <% matches.forEach(match => {%>
+        <tr>
+            <td><%=match.tournament.name%></td>
+            <td><%=match.player1.id == userId ? match.player1.getFullName() : match.player2.getFullName()%></td>
+            <td><%=match.layer%></td>
+            <td><%
+                let result = match.getResultForUser(userId)
+                if(result == "won") { %>
+                    <span>Won</span>
+                <% } else if(result == "lost") { %>
+                    <span>Lost</span>
+                <% } else if(result == "waiting") { %>
+                    <span title="Waiting for the opponent to enter the result">Waiting</span>
+                <% } else { %>
+                    <form method="POST">
+                        <input type="hidden" name="id" value="<%=match.id%>" />
+                        <select name="verdict">
+                            <option value="1">Won</option>
+                            <option value="0">Lost</option>
+                        </select>
+                        <input type="submit" value="Submit"/>
+                    </form>
+                <% } %>
+            </td>
+        </tr>
+    <% }) %>
+</table>
+
+<% if(currentPage > 1) { %>
+    <a href="<%=`${url}/${currentPage-1}${query}`%>" title="Previous page">
+        <button>Previous page</button>
+    </a>
+<% } %>
+
+<%=currentPage%>
+
+<% if(currentPage < totalPages) { %>
+    <a href="<%=`${url}/${currentPage+1}${query}`%>" title="Previous page">
+        <button>Next page</button>
+    </a>
+<% } %>
+
+<%- include("../footer.ejs") %>

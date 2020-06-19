@@ -16,4 +16,7 @@ module.exports = {
     "savedSuccessfully": {text: "Saved successfully.", alert: "success"},
     "applicationDeadlineHasPassed": {text: "Application deadline has passed", alert: "danger"},
     "participantsLimitReached": {text: "Number of participants has reached its limit. No more registrations are allowed.", alert: "danger"},
+    "alreadyRegistered": {text: "You are already registered for this tournament", alert: "danger"},
+    "registeredSuccessfully": {text: "You have been successfully registered for the tournament", alert: "success"},
+    "nonUniqueRanking": {text: "Please enter a unique ranking and license number", alert: "danger"}
 }

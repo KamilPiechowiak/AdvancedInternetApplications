@@ -1,0 +1,34 @@
+<%- include("../header.ejs") %>
+<h1><%=tournament.name%></h1>
+<%- include("../alert.ejs") %>
+
+<dl>
+    <dt>Discipline</dt>
+    <dd><%=tournament.discipline%></dd>
+    <dt>Organizer</dt>
+    <dd><%=`${tournament.organizer.firstName} ${tournament.organizer.lastName}`%></dd>
+    <dt>Event's time</dt>
+    <dd><%=tournament.getTournamentDateTime()%></dd>
+    <dt>Application deadline</dt>
+    <dd><%=tournament.getApplicationDeadlineDateTime()%></dd>
+</dl>
+
+<div>
+<% if(!tournament.active && !tournament.registered) { %>
+    <a href="/player/register/<%=tournament.id%>" >
+        <button>Register</button>    
+    </a>
+<% } else if(tournament.registered) { %>
+    <button disabled>Register</button>
+    <span>You are already registered</span>
+<% } else { %>
+    <button disabled>Register</button>
+    <span>Application deadline has passed</span>
+<% } %>
+</div>
+
+<div id="matches"></div>
+
+
+
+<%- include("../footer.ejs") %>

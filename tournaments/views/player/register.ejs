@@ -1,0 +1,12 @@
+<%- include("../header.ejs") %>
+<h1>Register for tournament</h1>
+<%- include("../alert.ejs") %>
+
+<form method="POST">
+    <%-include("../input.ejs", {type: "text", field: "ranking", label: "Ranking"})%>
+    <%-include("../input.ejs", {type: "text", field: "licenseNumber", label: "License Number"})%>
+    <% data.submit = "Register" %>
+    <%-include("../input.ejs", {type: "submit", field: "submit"})%>
+</form>
+
+<%- include("../footer.ejs") %>

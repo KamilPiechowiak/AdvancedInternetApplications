@@ -1,5 +1,19 @@
 const models = require("../../models")
-const pageSize = 10
+const Op = require("sequelize").Sequelize.Op
+const pageSize = 4
+
+const checkIfCurrentUserAlreadyRegistered = async (tournamentId, userId) => {
+    const ut = await models.UserTournament.count({
+        where: {
+            playerId: userId,
+            tournamentId: tournamentId
+        }
+    })
+    if(ut) {
+        return true
+    }
+    return false
+} 
 
 module.exports = {
     getTournaments: async (options) => {
@@ -26,21 +40,24 @@ module.exports = {
             selection.include[0].where = { time: { [Op.gt]: new Date()}}
         }
         if(options.search) {
-            selection.include[0].where[[Op.or]] = [
-                { name: {[Op.like]: `%${options.search}%`}},
-                { discipline: {[Op.like]: `%${options.search}%`}}
+            selection.include[0].where[Op.or] = [
+                { name: {[Op.iLike]: `%${options.search}%`}},
+                { discipline: {[Op.iLike]: `%${options.search}%`}}
             ]
         }
         const res = await models.UserTournament.findAndCountAll(selection)
         const tournaments = res.rows.map(userTournament => userTournament.tournament)
+        if(!tournaments.length && options.page != 1) {
+            throw("NoRows")
+        }
         return {
             totalPages: Math.ceil(res.count/pageSize),
-            array: tournaments,
+            tournaments: tournaments,
             past: options.past,
         }
     },
-    checkIfItIsPossibleToRegister: async (id) => {
-        const tournament = await models.Tournament({
+    checkIfItIsPossibleToRegister: async (id, user) => {
+        const tournament = await models.Tournament.findOne({
             where: {id: id}
         })
         if(!tournament) {
@@ -49,7 +66,7 @@ module.exports = {
         if(tournament.applicationDeadline < new Date()) {
             throw("applicationDeadlineHasPassed")
         }
-        const registeredAlready = models.UserTournament.count({
+        const registeredAlready = await models.UserTournament.count({
             where: {
                 tournamentId: tournament.id,
             }
@@ -57,11 +74,14 @@ module.exports = {
         if(registeredAlready == tournament.maxParticipants) {
             throw("participantsLimitReached")
         }
+        if(await checkIfCurrentUserAlreadyRegistered(id, user.id)) {
+            throw("alreadyRegistered")
+        }
     },
 
     registerForTournament: async (id, data, user) => {
         await models.sequelize.transaction(async t => {
-            const tournament = await models.Tournament.getTournaments({
+            const tournament = await models.Tournament.findOne({
                 where: {id: id},
                 transaction: t,
                 lock: t.LOCK
@@ -77,14 +97,28 @@ module.exports = {
             if(registeredAlready == tournament.maxParticipants) {
                 throw({general: "participantsLimitReached"})
             }
+            if(await checkIfCurrentUserAlreadyRegistered(id, user.id)) {
+                throw({general: "alreadyRegistered"})
+            }
             const userTournament = models.UserTournament.build({
                 ranking: data.ranking,
                 licenseNumber: data.licenseNumber,
                 playerId: user.id,
                 tournamentId: tournament.id
             })
-            await userTournament.validate()
-            await userTournament.save()
+            const validation = await userTournament.validate()
+            if(Object.keys(validation).length > 0) {
+                throw(validation)
+            }
+            userTournament.ranking = parseInt(userTournament.ranking)
+            try {
+                await userTournament.save({
+                    transaction: t
+                })
+            } catch(err) {
+                throw({general: "nonUniqueRanking"})
+            }
         })
+        return "registeredSuccessfully"
     }
 }

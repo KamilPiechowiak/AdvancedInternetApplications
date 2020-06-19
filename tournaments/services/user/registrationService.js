@@ -28,11 +28,7 @@ module.exports = {
             activateTokenExpritationDate: expirationDate
         })
         await user.setPassword(data.password)
-        try {
-            await user.validate()
-        } catch(err) {
-            Object.assign(validation, err)
-        }
+        Object.assign(validation, await user.validate())
         if(Object.keys(validation).length > 0) {
             throw(validation)
         }

@@ -2,8 +2,9 @@ const Sequelize = require("sequelize")
 const sequelize = require("./sequelize")
 const User = require("./User")
 const Tournament = require("./Tournament")
+const Model = require("./Model")
 
-class Match extends Sequelize.Model {
+class Match extends Model {
     async updateVerdict(userId, verdict) {
         if(userId == this.player1) {
             if(verdict) {
@@ -29,6 +30,29 @@ class Match extends Sequelize.Model {
         }
         await match.save()
         return winner
+    }
+    getResultForUser(userId) {
+        if(this.player1.id == userId) {
+            if(this.winnerBy1 == 1 && this.winnerBy2 == 1) {
+                return "won"
+            } else if(this.winnerBy1 == 2 && this.winnerBy2 == 2) {
+                return "lost"
+            } else if(this.winnerBy1 == 0) {
+                return "enterResult"
+            } else {
+                return "waiting"
+            }
+        } else {
+            if(this.winnerBy1 == 2 && this.winnerBy2 == 2) {
+                return "won"
+            } else if(this.winnerBy1 == 1 && this.winnerBy2 == 1) {
+                return "lost"
+            } else if(this.winnerBy2 == 0) {
+                return "enterResult"
+            } else {
+                return "waiting"
+            }
+        }
     }
 }
 

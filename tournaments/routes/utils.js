@@ -20,6 +20,6 @@ module.exports = {
         }
     },
     getUrlWithoutPageNumber: function(req) {
-        return req.url.split("/").slice(0, -1).join("/")
+        return req.originalUrl.split("?")[0].split("/").slice(0, -1).join("/")
     }
 }

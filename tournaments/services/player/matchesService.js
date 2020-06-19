@@ -1,4 +1,7 @@
 const models = require("../../models")
+const { Tournament, User } = require("../../models")
+const Op = require("sequelize").Sequelize.Op
+const pageSize = 4
 
 module.exports = {
     getMatches: async (options) => {
@@ -9,8 +12,8 @@ module.exports = {
         const selection = {
             where: {
                 [Op.or]: {
-                    player1: options.userId,
-                    player2: options.userId
+                    player1Id: options.userId,
+                    player2Id: options.userId
                 }
             },
             include: [{
@@ -24,7 +27,7 @@ module.exports = {
         if(options.past) {
             selection.where.winnerBy1 = {
                 [Op.and]: [
-                    models.sequelize.col("winnerBy2"),
+                    { [Op.eq]: models.sequelize.col("winnerBy2")},
                     { [Op.gt]: 0 }
                 ]
             }
@@ -33,15 +36,21 @@ module.exports = {
             selection.where.winnerBy1 = {
                 [Op.or]: [
                     { [Op.ne]: models.sequelize.col("winnerBy2") },
-                    0
+                    { [Op.eq]: 0 }
                 ]
             }
         }
+        selection.include = [
+            {model: Tournament, as: "tournament"},
+            {model: User, as: "player1"},
+            {model: User, as: "player2"}
+        ]
         const res = await models.Match.findAndCountAll(selection)
         const tournaments = res.rows.map(userTournament => userTournament.tournament)
         return {
+            currentPage: page,
             totalPages: Math.ceil(res.count/pageSize),
-            array: tournaments,
+            matches: tournaments,
             past: options.past,
         }
     },
@@ -57,7 +66,7 @@ module.exports = {
             if(!match) {
                 throw("NotFound")
             }
-            const winner = await match.checkWinner(userId, verdict)
+            const winner = await match.updateVerdict(userId, verdict)
             if(winner) {
                 let winnerId = match.player1Id
                 if(winner == 2) {

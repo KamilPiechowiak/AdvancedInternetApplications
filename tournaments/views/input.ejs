@@ -1,21 +1,18 @@
 <div class="form-group"><%
-        let labelExists = true
-        try{label} catch(err) {labelExists = false}
-        if(labelExists) {
+        if(typeof label != "undefined") {
             %>
             <label for="<%=field%>"><%=label%></label><%
         }
         %>
         <input type="<%=type%>" name="<%=field%>" id="<%=field%>" <%
-        let dataExists = true
-        try{data} catch(err) {dataExists = false}
-        if(dataExists && data[field]) {
+        if(typeof data != "undefined" && data[field]) {
             %>value="<%=data[field]%>"<%
         }
+        if(typeof step != "undefined") {
+            %> step="<%=step%>"<%
+        }
         %>/><%
-        let validationExists = true
-        try{validation} catch(err) {validationExists = false} 
-        if(validationExists && validation[field]) {
+        if(typeof validation != "undefined" && validation[field]) {
             %><span class="validation-alert"><%
             validation[field].forEach(element => {
                 %><%=element%> <% 

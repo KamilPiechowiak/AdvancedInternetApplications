@@ -20,23 +20,33 @@ router.all("*", async (req, res, next) => {
     }
 })
 
+router.get("/", (req, res, next) => {
+    req.url="/tournaments/1"+req.url.substring(1)
+    req.originalUrl="tournaments/1"+req.originalUrl.substring(1)
+    next()
+})
+
 router.use("/user", userRouter)
 router.use("/tournaments", tournamentsRouter)
 router.use("/player", playerRouter)
 router.use("/organizer", organizerRouter)
 
-router.get("/", (req, res, next) => {
-    tournamentsService.getTournaments({
-        page: 1
-    }).then(tournaments => {
-        res.render("index", {
-            message: utils.getMessage(req),
-            ...tournaments
-        })
-    }).catch(err => {
-        console.log(err)
-        next()
-    })
+router.all("*", (req, res) => {
+    res.sendStatus(404)
 })
+
+// router.get("/", (req, res, next) => {
+//     tournamentsService.getTournaments({
+//         page: 1
+//     }).then(tournaments => {
+//         res.render("index", {
+//             message: utils.getMessage(req),
+//             ...tournaments
+//         })
+//     }).catch(err => {
+//         console.log(err)
+//         next()
+//     })
+// })
 
 module.exports = router

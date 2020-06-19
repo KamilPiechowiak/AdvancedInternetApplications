@@ -24,8 +24,8 @@ const seedMatches = async (tournament) => {
                 previousMatch2Id: participants[b]
             })
             if(i == 1) {
-                match.player1Id = usersTournament[a]
-                match.player2Id = usersTournament[b]
+                match.player1Id = usersTournament.length > a ? usersTournament[a] : null
+                match.player2Id = usersTournament.length > b ? usersTournament[b] : null
             }
             await match.save()
             newLayer.push([match.id])

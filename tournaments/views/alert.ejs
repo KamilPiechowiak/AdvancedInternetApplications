@@ -1,4 +1,4 @@
-<% if(message) { %>
+<% if(typeof message != "undefined") { %>
     <div class="alert <%=message.alert%>">
         <%=message.text%>
     </div>
