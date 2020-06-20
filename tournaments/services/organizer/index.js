@@ -35,7 +35,7 @@ module.exports = {
         } else if(id != 0 && tournament.time < new Date() && tournament.time.toGMTString() != data.time.toGMTString()) {
             validation["displayedDate"] = ["You can't change date of the past tournament"]
         }
-        if(tournament.time < data.applicationDeadline) {
+        if(data.time < data.applicationDeadline) {
             validation["displayedApplicationDeadlineDate"] = ["Application deadline can't be later than tournament time"]
         }
         if(id != 0 && tournament.time < new Date() && tournament.applicationDeadline.toGMTString() != data.applicationDeadline.toGMTString()) {
@@ -64,5 +64,15 @@ module.exports = {
         await tournament.save()
         tournament.updateDisplayedDates()
         return tournament
+    },
+    deleteTournament: async(id, user) => {
+        tournament = await models.Tournament.findOne({where: {
+            id: id,
+            organizerId: user.id
+        }})
+        if(!tournament) {
+            throw("NotFound")
+        }
+        await tournament.destroy()
     }
 }

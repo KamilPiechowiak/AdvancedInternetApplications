@@ -11,9 +11,14 @@
         if(typeof step != "undefined") {
             %> step="<%=step%>"<%
         }
+        if(type == "submit") {
+            %>class="form-control mr-2 mb-2 btn btn-success"<%
+        } else {
+            %>class="form-control mr-2 mb-2"<%
+        }
         %>/><%
         if(typeof validation != "undefined" && validation[field]) {
-            %><span class="validation-alert"><%
+            %><span class="text-danger"><%
             validation[field].forEach(element => {
                 %><%=element%> <% 
             });

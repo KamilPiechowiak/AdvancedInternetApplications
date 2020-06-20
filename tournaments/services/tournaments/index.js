@@ -48,9 +48,9 @@ module.exports = {
     getTournaments: async (options) => {
         const selection = getSelectionFromOptions(options)
         const res = await models.Tournament.findAndCountAll(selection)
-        if(!res.rows.length && options.page != 1) {
-            throw("NoRows")
-        }
+        // if(!res.rows.length && options.page != 1) {
+        //     throw("NoRows")
+        // }
         return {
             totalPages: Math.ceil(res.count/pageSize),
             tournaments: res.rows,
@@ -69,6 +69,11 @@ module.exports = {
             throw("NotFound")
         }
         tournament.registered = await checkIfCurrentUserRegistered(id, userId)
+        tournament.numberOfRegistered = await models.UserTournament.count({
+            where: {
+                tournamentId: tournament.id
+            }
+        })
         console.log(tournament)
         return tournament
     },

@@ -1,5 +1,5 @@
 <%- include("../header.ejs") %>
-<h1>Tournaments</h1>
+<h1><%=title%></h1>
 <%- include("../alert.ejs") %>
 
 <% let query = ""
@@ -7,60 +7,66 @@ if(search) {
     query = `?search=${search}`
 } %>
 
-<form method="GET">
+<form method="GET" class="form-inline">
     <% data = {search: search, submit: "Search"} %>
     <%-include("../input.ejs", {type: "text", field: "search"})%>
     <%-include("../input.ejs", {type: "submit", field: "submit"})%>
-</form>
 
 <% if(past) { %>
     <a href="<%=url.replace("/past", "")%>/<%=currentPage%><%=query%>">
-        <button>
+        <button type="button" class="btn btn-success mb-2 mr-2">
             Upcoming tournaments
         </button>
     </a>
 <% } else { %>
     <a href="<%=url%>/past/<%=currentPage%><%=query%>">
-        <button>
+        <button type="button" class="btn btn-success mb-2 mr-2">
             Past tournaments
         </button>
     </a>
 <% } %>
 
+</form>
 
-<table>
+
+<table class="table table-borderless table-striped">
+    <thead>
     <tr>
         <th>Name</th>
         <th>Discipline</th>
         <th>Time</th>
     </tr>
+    </thead>
+    <tbody>
     <% tournaments.forEach(tournament => {%>
         <tr>
             <td><a href="/tournaments/details/<%=tournament.id%>" title="Details">
                 <%=tournament.name%>
             </a>
             <% if(typeof owner != "undefined" && owner) { %>
-                <a href="/organizer/tournaments/edit/<%=tournament.id%>" title="Edit"><span>Edit</span></a>
+                <a href="/organizer/tournaments/edit/<%=tournament.id%>" title="Edit"><span class="material-icons clickableIcon">create</span></a>
+                <span onclick="deleteTournament(<%=tournament.id%>, '<%=tournament.name%>')" title="Delete" class="material-icons clickableIcon">clear</span>
             <% } %>
             </td>
             <td><%=tournament.discipline%></td>
             <td><%=tournament.getTournamentDateTime()%></td>
         </tr>
     <% }) %>
+    </tbody>
 </table>
 
-<% if(currentPage > 1) { %>
-    <a href="<%=`${url}/${parseInt(currentPage)-1}${query}`%>" title="Previous page">
-        <button>Previous page</button>
-    </a>
-<% } %>
+<%-include("../pagination.ejs", {query: query})%>
 
-<%=currentPage%>
-
-<% if(currentPage < totalPages) { %>
-    <a href="<%=`${url}/${parseInt(currentPage)+1}${query}`%>" title="Previous page">
-        <button>Next page</button>
-    </a>
-<% } %>
+<script>
+    function deleteTournament(id, name) {
+        console.log("ABC")
+        if(confirm(`Are you sure you want to delete tournament ${name}?`)) {
+            $.get(`/organizer/tournaments/delete/${id}`, function() {
+                console.log("ABC")
+                location.reload()
+            })
+        }
+    }    
+</script>
 
 <%- include("../footer.ejs") %>

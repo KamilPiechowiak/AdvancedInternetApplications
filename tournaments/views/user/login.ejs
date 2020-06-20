@@ -8,5 +8,7 @@
     <% data = {submit: "Login"} %>
     <%-include("../input.ejs", {type: "submit", field: "submit"})%>
 </form>
+<p>Did you forget your password? <a href="/user/forgotpassword" title="Reset password">Reset password</a></p>
+<p>Don't you have an account? <a href="/user/signup" title="Register">Register</a></p>
 
 <%- include("../footer.ejs") %>

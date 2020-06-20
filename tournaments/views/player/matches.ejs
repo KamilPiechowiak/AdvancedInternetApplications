@@ -1,16 +1,21 @@
 <%- include("../header.ejs") %>
-<h1>Tournaments</h1>
+<h1><%=past ? "Resolved matches" : "Unresolved matches"%></h1>
 <%- include("../alert.ejs") %>
+
+<% let query = ""
+if(typeof search != "undefined") {
+    query = `?search=${search}`
+} %>
 
 <% if(past) { %>
     <a href="<%=url.replace("/past", "")%>/<%=currentPage%>">
-        <button>
+        <button class="btn btn-success mb-2 mr-2">
             Unresolved matches
         </button>
     </a>
 <% } else { %>
     <a href="<%=url%>/past/<%=currentPage%>">
-        <button>
+        <button class="btn btn-success mb-2 mr-2">
             Resolved matches
         </button>
     </a>
@@ -18,13 +23,16 @@
 
 
 
-<table>
+<table class="table table-borderless table-striped">
+    <thead>
     <tr>
         <th>Tournament</th>
         <th>Opponent</th>
         <th>Stage</th>
         <th>Result</th>
     </tr>
+    </thead>
+    <tbody>
     <% matches.forEach(match => {%>
         <tr>
             <td><%=match.tournament.name%></td>
@@ -33,39 +41,29 @@
             <td><%
                 let result = match.getResultForUser(userId)
                 if(result == "won") { %>
-                    <span>Won</span>
+                    <span class="text-success">Won</span>
                 <% } else if(result == "lost") { %>
-                    <span>Lost</span>
+                    <span class="text-danger">Lost</span>
                 <% } else if(result == "waiting") { %>
                     <span title="Waiting for the opponent to enter the result">Waiting</span>
                 <% } else { %>
                     <% if (match.disagreement) { %><%="Inconsistent answers. Enter again:"%><% } %>
-                    <form method="POST">
+                    <form method="POST" class="form-inline">
                         <input type="hidden" name="id" value="<%=match.id%>" />
-                        <select name="verdict">
+                        <select name="verdict" class="form-control mb-2 mr-2">
                             <option value="1">Won</option>
                             <option value="0">Lost</option>
                         </select>
-                        <input type="submit" value="Submit"/>
+                        <input type="submit" value="Submit" class="form-control mb-2 mr-2"/>
                     </form>
                 <% } %>
             </td>
         </tr>
     <% }) %>
+    </tbody>
 </table>
 
-<% if(currentPage > 1) { %>
-    <a href="<%=`${url}/${currentPage-1}${query}`%>" title="Previous page">
-        <button>Previous page</button>
-    </a>
-<% } %>
 
-<%=currentPage%>
-
-<% if(currentPage < totalPages) { %>
-    <a href="<%=`${url}/${currentPage+1}${query}`%>" title="Previous page">
-        <button>Next page</button>
-    </a>
-<% } %>
+<%-include("../pagination.ejs", {query: query})%>
 
 <%- include("../footer.ejs") %>

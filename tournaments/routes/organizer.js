@@ -18,7 +18,10 @@ const showTournaments = (req, res, next, past) => {
         organizerId: req.user.id,
         search: req.params.search
     }).then(tournaments => {
+        const title = past ? "Past tournaments organized" : "Upcoming tournaments organized"
         res.render("tournaments/list", {
+            title: title,
+            message: utils.getMessage(req),
             currentPage: req.params.page,
             url: utils.getUrlWithoutPageNumber(req),
             owner: true,
@@ -70,6 +73,16 @@ router.get("/tournaments/edit/:id", (req, res, next) => {
             console.log(err)
             next()
         })
+})
+
+router.get("/tournaments/delete/:id", (req, res, next) => {
+    organizerService.deleteTournament(req.params.id, req.user).then(()=>{
+        req.session.message = "tournamentDeleted"
+        res.sendStatus(204)
+    }).catch(err => {
+        console.log(err)
+        next()
+    })
 })
 
 module.exports = router

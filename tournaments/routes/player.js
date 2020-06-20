@@ -46,7 +46,9 @@ const showTournaments = (req, res, next, past) => {
         past: past,
         search: req.query.search
     }).then(tournaments => {
+        const title = past ? "My upcoming tournaments" : "My past tournaments"
         res.render("tournaments/list", {
+            title: title,
             currentPage: req.params.page,
             url: utils.getUrlWithoutPageNumber(req),
             search: req.query.search,
