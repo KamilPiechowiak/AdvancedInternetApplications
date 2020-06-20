@@ -2,7 +2,7 @@
 <h1><%= id=="0" ? "New" : "Edit"%> tournament</h1>
 <%- include("../alert.ejs") %>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <%-include("../input.ejs", {type: "text", field: "name", label: "Name"})%>
     <%-include("../input.ejs", {type: "text", field: "discipline", label: "Discipline"})%>
     <%-include("../input.ejs", {type: "date", field: "displayedDate", label: "Tournament date"})%>
@@ -12,8 +12,27 @@
     <%-include("../input.ejs", {type: "number", field: "maxParticipants", label: "Max Participants"})%>
     <%-include("../input.ejs", {type: "date", field: "displayedApplicationDeadlineDate", label: "Application deadline date"})%>
     <%-include("../input.ejs", {type: "time", field: "displayedApplicationDeadlineTime", label: "Application deadline time"})%>
-    <% data = {submit: "Save"} %>
+    <%-include("../input.ejs", {type: "file", field: "sponsorLogos", label: "Sponsor logos", multiple: "multiple"})%>
+    <% data.submit = "Save" %>
     <%-include("../input.ejs", {type: "submit", field: "submit"})%>
 </form>
+
+<div id="editImages">
+    <%data.images.forEach(image=>{%>
+        <div id="img<%=image.id%>" title="Delete image" onclick="deleteImage(<%=image.id%>)">
+            <img src="/img/<%=image.name%>"/>
+        </div>
+    <% }) %>
+</div>
+
+<script>
+    function deleteImage(id) {
+        if(confirm("Are you sure you want to delete this image?")) {
+            $.get(`/organizer/image/delete/${id}`, ()=>{
+                $(`#img${id}`).remove()
+            })
+        }
+    }
+</script>
 
 <%- include("../footer.ejs") %>

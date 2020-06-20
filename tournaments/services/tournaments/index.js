@@ -63,6 +63,8 @@ module.exports = {
             include: [{
                 model: User,
                 as: "organizer"
+            },{
+                model: models.Image
             }]
         })
         if(!tournament) {

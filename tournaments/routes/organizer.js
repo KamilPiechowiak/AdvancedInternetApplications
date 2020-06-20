@@ -1,5 +1,6 @@
 const router = require("express").Router()
 const organizerService = require("../services/organizer")
+const imagesService = require("../services/organizer/imagesService")
 const tournamentsService = require("../services/tournaments")
 const utils = require("./utils")
 
@@ -43,7 +44,13 @@ router.get("/tournaments/past/:page", (req, res, next) => {
 })
 
 router.post("/tournaments/edit/:id", (req, res, next) => {
-    organizerService.saveTournament(req.params.id, req.body, req.user)
+    let files = []
+    if(Array.isArray(req.files.sponsorLogos)) {
+        files = req.files.sponsorLogos
+    } else if(req.files.sponsorLogos) {
+        files = [req.files.sponsorLogos]
+    }
+    organizerService.saveTournament(req.params.id, req.body, req.user, files)
         .then(tournament => {
             req.session.message = "savedSuccessfully"
             return res.redirect(`/organizer/tournaments/edit/${tournament.id}`)
@@ -78,6 +85,15 @@ router.get("/tournaments/edit/:id", (req, res, next) => {
 router.get("/tournaments/delete/:id", (req, res, next) => {
     organizerService.deleteTournament(req.params.id, req.user).then(()=>{
         req.session.message = "tournamentDeleted"
+        res.sendStatus(204)
+    }).catch(err => {
+        console.log(err)
+        next()
+    })
+})
+
+router.get("/image/delete/:id", (req, res, next) => {
+    imagesService.deleteImage(req.params.id, req.user).then(()=>{
         res.sendStatus(204)
     }).catch(err => {
         console.log(err)

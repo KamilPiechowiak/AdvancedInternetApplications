@@ -3,6 +3,10 @@
     font-family: Muli, Tahoma, Geneva, Verdana, sans-serif;
 }
 
+h2 {
+    margin-top: 2rem;
+}
+
 a, .page-link {
     color: #28a745;
 }
@@ -59,4 +63,40 @@ a:hover, .page-link:hover{
 .clickableIcon {
     color:  #28a745;
     cursor: pointer;
+}
+
+#editImages {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#editImages div {
+    margin-right: 1rem;
+}
+
+#editImages div:hover {
+    background-color: black;
+    cursor: pointer;
+}
+
+#editImages img {
+    display: block;
+    height: 150px;
+    width: auto;
+    position: relative;
+}
+
+#editImages img:hover {
+    opacity: 0.5;
+}
+
+#sponsors {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#sponsors img {
+    width: auto;
+    height: 150px;
+    margin-right: 1rem;
 }

@@ -2,6 +2,8 @@ const express = require("express")
 const session = require("express-session")
 const app = express()
 const bodyParser = require("body-parser")
+const busboy = require("connect-busboy")
+const fileUpload = require("express-fileupload")
 const config = require("./config")
 const router = require("./routes")
 const { sequelize } = require("./models")
@@ -12,6 +14,16 @@ app.set("view engine", "ejs")
 app.use(session(config.session))
 
 app.use(bodyParser.urlencoded({ extended: false }))
+
+app.use(busboy())
+
+app.use(fileUpload({
+    limits: {
+        fileSize: 10*1024*1024
+    },
+    // useTempFiles: true,
+    // tempFileDir: "/tmp",
+}))
 
 tournamentsSeedingService.start()
 

@@ -1,22 +1,26 @@
 const models = require("../../models")
 const timeUtils = require("../../models/timeUtils")
+const imagesService = require("./imagesService")
 
 module.exports = {
     getTournament: async (id, user) => {
         if(id == 0) {
             return models.Tournament.build()
         }
-        const tournament = await models.Tournament.findOne({where: {
-            id: id,
-            organizerId: user.id
-        }})
+        const tournament = await models.Tournament.findOne({
+            where: {
+                id: id,
+                organizerId: user.id,
+            },
+            include: {model: models.Image}
+        })
         if(!tournament) {
             throw("NotFound")
         }
         tournament.updateDisplayedDates()
         return tournament
     },
-    saveTournament: async (id, data, user) => {
+    saveTournament: async (id, data, user, files) => {
         let tournament = models.Tournament.build()
         if(id != 0) {
             tournament = await models.Tournament.findOne({where: {
@@ -63,6 +67,7 @@ module.exports = {
 
         await tournament.save()
         tournament.updateDisplayedDates()
+        await imagesService.saveImages(tournament, files)
         return tournament
     },
     deleteTournament: async(id, user) => {

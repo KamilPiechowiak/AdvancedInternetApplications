@@ -16,6 +16,9 @@
         } else {
             %>class="form-control mr-2 mb-2"<%
         }
+        if(type == "file" && typeof multiple != "undefined") {
+            %>multiple<%
+        }
         %>/><%
         if(typeof validation != "undefined" && validation[field]) {
             %><span class="text-danger"><%
