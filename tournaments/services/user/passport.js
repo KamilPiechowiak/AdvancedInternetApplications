@@ -7,7 +7,6 @@ passport.use(new LocalStrategy({
         passwordField: "password"
     },
     (email, password, done) => {
-        console.log(email + " " + password)
         User.findOne({ where: {email: email} })
             .then(async user => {
                 if (!user || !(user.validatePassword(password))) {once

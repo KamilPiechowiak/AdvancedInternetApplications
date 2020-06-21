@@ -18,11 +18,12 @@
 </form>
 
 <div id="editImages">
-    <%data.images.forEach(image=>{%>
+    <% if(typeof data.images != "undefined") {
+        data.images.forEach(image=>{%>
         <div id="img<%=image.id%>" title="Delete image" onclick="deleteImage(<%=image.id%>)">
             <img src="/img/<%=image.name%>"/>
         </div>
-    <% }) %>
+    <% })} %>
 </div>
 
 <script>

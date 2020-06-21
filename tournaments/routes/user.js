@@ -35,7 +35,6 @@ router.get("/logout", (req, res) => {
 
 router.post("/signup", (req, res) => {
     registrationService.register(req.body).then(() => {
-        console.log("success")
         req.session.message = "accountCreated"
         return res.redirect("/")
     }).catch(err => {

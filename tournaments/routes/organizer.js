@@ -45,7 +45,9 @@ router.get("/tournaments/past/:page", (req, res, next) => {
 
 router.post("/tournaments/edit/:id", (req, res, next) => {
     let files = []
-    if(Array.isArray(req.files.sponsorLogos)) {
+    if(req.files == null) {
+        //do nothing
+    } else if(Array.isArray(req.files.sponsorLogos)) {
         files = req.files.sponsorLogos
     } else if(req.files.sponsorLogos) {
         files = [req.files.sponsorLogos]

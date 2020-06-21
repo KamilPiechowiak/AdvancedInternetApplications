@@ -52,6 +52,10 @@ function loadMatches(id) {
         for(match of matches) {
             matchesDict[match.id] = match
         }
+        if(matches.length == 0) {
+            matchesContainer.text("There are no matches yet")
+            return
+        }
         displayMatch(matches[0], 0)
         matchesContainer.css({
             width: `${(matches[0].layer+1)*(w+ws)}px`,

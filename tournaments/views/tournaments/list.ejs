@@ -59,10 +59,8 @@ if(search) {
 
 <script>
     function deleteTournament(id, name) {
-        console.log("ABC")
         if(confirm(`Are you sure you want to delete tournament ${name}?`)) {
             $.get(`/organizer/tournaments/delete/${id}`, function() {
-                console.log("ABC")
                 location.reload()
             })
         }

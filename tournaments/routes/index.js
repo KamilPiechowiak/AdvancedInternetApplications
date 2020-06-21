@@ -9,7 +9,6 @@ const utils = require("./utils")
 const tournamentsService = require("../services/tournaments")
 
 router.all("*", async (req, res, next) => {
-    console.log(req.session.userid)
     if(req.session.userid) {
         req.user = await loginService.deserializeUser(req.session.userid)
         res.locals.user = req.user
@@ -32,21 +31,8 @@ router.use("/player", playerRouter)
 router.use("/organizer", organizerRouter)
 
 router.all("*", (req, res) => {
-    res.sendStatus(404)
+    res.status(404)
+    res.render("err")
 })
-
-// router.get("/", (req, res, next) => {
-//     tournamentsService.getTournaments({
-//         page: 1
-//     }).then(tournaments => {
-//         res.render("index", {
-//             message: utils.getMessage(req),
-//             ...tournaments
-//         })
-//     }).catch(err => {
-//         console.log(err)
-//         next()
-//     })
-// })
 
 module.exports = router

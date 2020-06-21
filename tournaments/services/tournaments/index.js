@@ -76,7 +76,6 @@ module.exports = {
                 tournamentId: tournament.id
             }
         })
-        console.log(tournament)
         return tournament
     },
     getMatches: async (id) => {
