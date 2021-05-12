@@ -20,7 +20,7 @@
     "express-session": "^1.17.1",
     "image-type": "^4.1.0",
     "jquery": "^3.5.1",
-    "nodemailer": "^6.4.8",
+    "nodemailer": "^6.4.16",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "pg": "^8.2.1",
